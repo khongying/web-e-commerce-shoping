@@ -27,7 +27,7 @@
     var product_name = $(this).attr('product_name');
     // alert(code);
     $.ajax({
-      url: '<?php base_url() ?>index.php/main/basket',
+      url: '<?= base_url() ?>index.php/main/basket',
       type: 'POST',
       data: {code: code, price: price, img: img, product_name: product_name},
     })
