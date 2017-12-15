@@ -12,6 +12,7 @@ class product_m extends CI_Model {
 	{
 		
 		$this->db->select('*');
+		$this->db->where('status_product',1);
 		$query = $this->db->get('product');
 		$product = $query->result();
 		return $product;

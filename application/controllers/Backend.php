@@ -147,6 +147,51 @@ class Backend extends CI_Controller {
 		$data['po_data'] = $this->po_m->get_po_data($po_no);
 		$this->load->view('backend/data_po',$data);
 	}
+
+
+	public function del_product(){
+		$data = $this->input->post();
+		// var_dump($data);
+		$data_update = array(
+			'status_product' => 0
+		);
+
+		$this->db->where("id", $data['product_id']);
+        $query = $this->db->update("product",$data_update);
+        $return = array();
+		if ($query) {
+			$return['status'] 	= true;
+			$return['message'] 	= 'ลบสินค้าเรียบร้อยแล้ว'; 
+			$return['id'] 	= $data['product_id']; 
+		}else{
+			$return['status'] 	= false;
+			$return['message'] 	= 'ลบสินค้าไม่สำเร็จ';
+		}
+
+		echo json_encode($return);
+	}
+
+	public function del_member(){
+		$data = $this->input->post();
+		// var_dump($data);
+		$data_update = array(
+			'status_user' => 0
+		);
+
+		$this->db->where("id", $data['member_id']);
+        $query = $this->db->update("member",$data_update);
+        $return = array();
+		if ($query) {
+			$return['status'] 	= true;
+			$return['message'] 	= 'ผู้ใช้งานเรียบร้อยแล้ว'; 
+			$return['id'] 	= $data['member_id']; 
+		}else{
+			$return['status'] 	= false;
+			$return['message'] 	= 'ลบไม่สำเร็จ';
+		}
+
+		echo json_encode($return);
+	}
 }
 
 

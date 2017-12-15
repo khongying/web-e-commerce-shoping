@@ -16,7 +16,7 @@
 			<?php
 				foreach ($all_product as $key => $value) {
 			?>
-				<tr>
+				<tr id="row<?= $value->id ?>">
 					<td> <img src="<?= base_url(); ?>imges/product/<?= $value->file ?>" style="width: 50px;"> </td>
 					<td><?= $value->code ?></td>
 					<td><?= $value->name ?></td>
@@ -36,7 +36,56 @@
 <script type="text/javascript">
 	$('.del').click(function(event) {
 		var product_id = $(this).attr('product_id');
-		alert(product_id);
-		$(this).parent().parent().remove();
+			swal({
+				title: 'ลบรายการนี้?',
+				text: "คุณต้องการลบรายการนี้ใช่ไหม!",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Yes, delete it!",
+				closeOnConfirm: false
+			},
+			function(){
+
+				$.ajax({
+					url: '<?= base_url() ?>index.php/backend/del_product',
+					type: 'POST',
+					data: {product_id: product_id},
+				})
+				.done(function(data) {
+					
+
+				var json = jQuery.parseJSON(data);
+				if(json.status == true){
+
+
+				swal({
+				    title: "สำเร็จ",
+				    text: json.message,
+				    type: "success",
+				    showCancelButton: false
+				},
+				function(){
+					$('#row'+json.id).remove();
+				});
+
+
+				}else{
+
+				swal({
+				    title: "ไม่สำเร็จ",
+				    text: json.message,
+				    type: "error",
+				    showCancelButton: false
+				},
+				function(){
+				    window.location = '<?=base_url()?>index.php/backend';
+				});
+
+				}
+				console.log(data);
+					
+				});
+			});
 	});
 </script>

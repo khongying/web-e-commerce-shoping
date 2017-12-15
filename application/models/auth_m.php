@@ -15,6 +15,7 @@ class auth_m extends CI_Model {
 		$this->db->from('member');
 		$this->db->where('email', $email);
 		$this->db->where('password', $pass);
+		$this->db->where('status_user', 1);
 		$this->db->limit('1');
 		$query = $this->db->get();
 		$res = array();
@@ -26,7 +27,7 @@ class auth_m extends CI_Model {
 
 			}else{
 				$res['status']  = false;
-				$res['message'] = 'กรุณาตรวจสอบ Email และ password';
+				$res['message'] = 'กรุณาตรวจสอบ Email และ Password';
 			}
 		}else{
 			$res['status']  = false;
@@ -40,6 +41,7 @@ class auth_m extends CI_Model {
 	public function get_member(){
 		$this->db->select('*');
 		$this->db->where('status !=', 1);
+		$this->db->where('status_user', 1);
 		$query = $this->db->get('member');
 		$member = $query->result();
 		return $member;

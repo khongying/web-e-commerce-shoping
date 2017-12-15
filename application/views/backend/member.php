@@ -16,7 +16,7 @@
 			$i = 1;
 				foreach ($member as $key => $value) {
 			?>
-				<tr>
+				<tr id="row<?= $value->id ?>">
 					<td><?= $i++; ?></td>
 					<td><?= $value->email ?></td>
 					<td><?= $value->full_name ?></td>
@@ -32,8 +32,59 @@
 	</table>
 </div>
 <script type="text/javascript">
+		
 	$('.del').click(function(event) {
 		var member_id = $(this).attr('member');
-		$(this).parent().parent().remove();
+			swal({
+				title: 'ลบรายการนี้?',
+				text: "คุณต้องการลบรายการนี้ใช่ไหม!",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Yes, delete it!",
+				closeOnConfirm: false
+			},
+			function(){
+
+				$.ajax({
+					url: '<?= base_url() ?>index.php/backend/del_member',
+					type: 'POST',
+					data: {member_id: member_id},
+				})
+				.done(function(data) {
+					
+
+				var json = jQuery.parseJSON(data);
+				if(json.status == true){
+
+
+				swal({
+				    title: "สำเร็จ",
+				    text: json.message,
+				    type: "success",
+				    showCancelButton: false
+				},
+				function(){
+					$('#row'+json.id).remove();
+				});
+
+
+				}else{
+
+				swal({
+				    title: "ไม่สำเร็จ",
+				    text: json.message,
+				    type: "error",
+				    showCancelButton: false
+				},
+				function(){
+				    window.location = '<?=base_url()?>index.php/backend/member';
+				});
+
+				}
+				// console.log(data);
+					
+				});
+			});
 	});
 </script>

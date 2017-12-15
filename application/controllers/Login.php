@@ -38,7 +38,7 @@ class Login extends CI_Controller {
 			$reponse['message'] = $res['message'];
 		}
 		
-		redirect('/');
+		echo json_encode($res);
 	}
 
 
